@@ -28,7 +28,10 @@ from ..nms import non_maximum_suppression, non_maximum_suppression_sparse
 from ._mrunet import mrunet_block
 from ._fpn import fpn_block
 from ._unetplus import unet_block as unet_block_v2
+from  .transunet import transunet_2d as transunet_block
 from .tfdata_wrapper import wrap_nuriscdata_as_tfdata
+from .FeatureFusionNetwork import  FF_UNet
+from .Attention_Gated_MultiResUNet import attention_mrunet
 
 
 class nuriscData2D(nuriscDataBase):
@@ -253,6 +256,34 @@ class Config2D(BaseConfig):
             self.unet_prefix = ''
             self.net_conv_after_unet = 128
             self.head_blocks = 2
+        elif self.backbone == 'ffnet':
+            self.unet_n_depth = 4
+            self.unet_kernel_size = 3, 3
+            self.unet_n_filter_base = 32
+            self.unet_n_conv_per_depth = 2
+            self.unet_pool = 2, 2
+            self.unet_activation = 'relu'
+            self.unet_last_activation = 'relu'
+            # batchnorm is more importnant for resnet blocks
+            self.unet_batch_norm = True
+            self.unet_dropout = 0.0
+            self.unet_prefix = ''
+            self.net_conv_after_unet = 128
+            self.head_blocks = 2
+        elif self.backbone == 'attentionmultiresunet':
+            self.unet_n_depth = 4
+            self.unet_kernel_size = 3, 3
+            self.unet_n_filter_base = 32
+            self.unet_n_conv_per_depth = 2
+            self.unet_pool = 2, 2
+            self.unet_activation = 'relu'
+            self.unet_last_activation = 'relu'
+            # batchnorm is more importnant for resnet blocks
+            self.unet_batch_norm = True
+            self.unet_dropout = 0.0
+            self.unet_prefix = ''
+            self.net_conv_after_unet = 128
+            self.head_blocks = 2
         else:
             # TODO: resnet backbone for segmentation model?
             raise ValueError("backbone '%s' not supported." % self.backbone)
@@ -397,6 +428,13 @@ class nurisc2D(nuriscBase):
         elif self.config.backbone == 'fpn':
             unet_base = fpn_block(head_filters=unet_kwargs['n_filter_base'],
                                   **unet_kwargs)(pooled_img)
+        elif self.config.backbone == 'ffnet':
+            unet_base = FF_UNet(filter=unet_kwargs['n_filter_base'], **unet_kwargs)(pooled_img)
+        elif self.config.backbone == 'transunet':
+            unet_base = transunet_block(filter_num=unet_kwargs['n_filter_base'],
+                                  **unet_kwargs)(pooled_img)
+        elif self.config.backbone == 'attentionmultiresunet':
+            unet_base = attention_mrunet(model_width=unet_kwargs['n_filter_base'])(pooled_img)
         else:
             _raise(NotImplementedError(self.config.backbone))
 
@@ -637,11 +675,11 @@ class nurisc2D(nuriscBase):
         return labels, res_dict
 
     def _axes_div_by(self, query_axes):
-        self.config.backbone in ('unet', 'unetplus', 'mrunet', 'fpn') or _raise(NotImplementedError())
+        self.config.backbone in ('unet', 'unetplus', 'mrunet', 'fpn','ffnet','attentionmultiresunet') or _raise(NotImplementedError())
         query_axes = axes_check_and_normalize(query_axes)
         assert len(self.config.unet_pool) == len(self.config.grid)
 
-        if self.config.backbone == 'mrunet':
+        if self.config.backbone == 'ffnet':
             depth, pool = 4, (2, 2)
             div_by = dict(zip(
                 self.config.axes.replace('C', ''),
