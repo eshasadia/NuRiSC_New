@@ -27,7 +27,8 @@ def _non_maximum_suppression_old(coord, prob, grid=(1,1), b=2, nms_thresh=0.5, p
 
     returns retained points
     """
-    from .lib.stardist2d import c_non_max_suppression_inds_old
+    from stardist.lib.stardist2d import c_non_max_suppression_inds_old
+#     # from .lib.stardist2d import c_non_max_suppression_inds_old
 
     # TODO: using b>0 with grid>1 can suppress small/cropped objects at the image boundary
 
@@ -200,8 +201,8 @@ def non_maximum_suppression_inds(dist, points, scores, thresh=0.5, use_bbox=True
 
     returns indices of selected polygons
     """
-
-    from .lib.stardist2d import c_non_max_suppression_inds
+    from stardist.lib.stardist2d import c_non_max_suppression_inds
+#     from .lib.stardist2d import c_non_max_suppression_inds
 
     assert dist.ndim == 2
     assert points.ndim == 2
@@ -341,7 +342,8 @@ def non_maximum_suppression_3d_inds(dist, points, rays, scores, thresh=0.5, use_
 
     returns indices of selected polygons
     """
-    from .lib.stardist3d import c_non_max_suppression_inds
+    from stardist.lib.stardist2d import c_non_max_suppression_inds
+#     from .lib.stardist3d import c_non_max_suppression_inds
 
     assert dist.ndim == 2
     assert points.ndim == 2
