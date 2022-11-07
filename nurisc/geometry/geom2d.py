@@ -8,7 +8,8 @@ from csbdeep.utils import _raise
 
 from ..utils import path_absolute, _is_power_of_2, _normalize_grid
 from ..matching import _check_label_array
-from ..lib.stardist2d import c_star_dist
+from stardist.lib.stardist2d import c_star_dist
+# from ..lib.stardist2d import c_star_dist
 
 
 
