@@ -33,7 +33,8 @@ from .tfdata_wrapper import wrap_nuriscdata_as_tfdata
 from .FeatureFusionNetwork import  FF_UNet
 from .Attention_Gated_MultiResUNet import attention_mrunet
 from .Hierarchial_BottleNeck_UNet import HBA_U_Net
-
+from .TransformerUnet import TransUNet
+from .MSSA_Net import MSSA_Net
 
 class nuriscData2D(nuriscDataBase):
 
@@ -257,6 +258,35 @@ class Config2D(BaseConfig):
             self.unet_prefix = ''
             self.net_conv_after_unet = 128
             self.head_blocks = 2
+        elif self.backbone == 'transformerunet':
+            self.unet_n_depth = 4
+            self.unet_kernel_size = 3, 3
+            self.unet_n_filter_base = 32
+            self.unet_n_conv_per_depth = 2
+            self.unet_pool = 2, 2
+            self.unet_activation = 'elu'
+            self.unet_last_activation = 'elu'
+            # batchnorm is more importnant for resnet blocks
+            self.unet_batch_norm = True
+            self.unet_dropout = 0.0
+            self.unet_prefix = ''
+            self.net_conv_after_unet = 128
+            self.head_blocks = 2
+        elif self.backbone == 'mssanet':
+            self.unet_n_depth = 4
+            self.unet_kernel_size = 3, 3
+            self.unet_n_filter_base = 32
+            self.unet_n_conv_per_depth = 2
+            self.unet_pool = 2, 2
+            self.unet_activation = 'elu'
+            self.unet_last_activation = 'elu'
+            # batchnorm is more importnant for resnet blocks
+            self.unet_batch_norm = True
+            self.unet_dropout = 0.0
+            self.unet_prefix = ''
+            self.net_conv_after_unet = 128
+            self.head_blocks = 2
+
         elif self.backbone == 'ffnet':
             self.unet_n_depth = 4
             self.unet_kernel_size = 3, 3
@@ -454,6 +484,8 @@ class nurisc2D(nuriscBase):
             unet_base = Concatenate()(unet_base)
         elif self.config.backbone == 'mrunet':
             unet_base = mrunet_block(unet_kwargs['n_filter_base'])(pooled_img)
+        elif self.config.backbone == 'mssanet':
+            unet_base = MSSA_Net()(pooled_img)
         elif self.config.backbone == 'fpn':
             unet_base = fpn_block(head_filters=unet_kwargs['n_filter_base'],
                                   **unet_kwargs)(pooled_img)
@@ -466,6 +498,8 @@ class nurisc2D(nuriscBase):
             unet_base = attention_mrunet(model_width=unet_kwargs['n_filter_base'])(pooled_img)
         elif self.config.backbone == 'hrunet':
             unet_base = HBA_U_Net()(pooled_img)
+        elif self.config.backbone == 'transformerunet':
+            unet_base = TransUNet()(pooled_img)
         else:
             _raise(NotImplementedError(self.config.backbone))
 
@@ -706,7 +740,7 @@ class nurisc2D(nuriscBase):
         return labels, res_dict
 
     def _axes_div_by(self, query_axes):
-        self.config.backbone in ('unet', 'unetplus', 'mrunet', 'fpn','ffnet','attentionmultiresunet','hrunet') or _raise(NotImplementedError())
+        self.config.backbone in ('unet', 'unetplus', 'mrunet', 'fpn','ffnet','attentionmultiresunet','hrunet','transformerunet','mssanet') or _raise(NotImplementedError())
         query_axes = axes_check_and_normalize(query_axes)
         assert len(self.config.unet_pool) == len(self.config.grid)
 
