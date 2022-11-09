@@ -243,19 +243,6 @@ class Config2D(BaseConfig):
             self.unet_prefix = ''
             self.net_conv_after_unet = 128
             self.head_blocks = 2
-         elif self.backbone == 'transunet':
-            self.unet_n_depth = 3
-            self.unet_kernel_size = 3, 3
-            self.unet_n_filter_base = 32
-            self.unet_n_conv_per_depth = 2
-            self.unet_pool = 2, 2
-            self.unet_activation = 'relu'
-            self.unet_last_activation = 'relu'
-            self.unet_batch_norm = False
-            self.unet_dropout = 0.0
-            self.unet_prefix = ''
-            self.net_conv_after_unet = 128
-            self.head_blocks = 2
         elif self.backbone == 'fpn':
             self.unet_n_depth = 4
             self.unet_kernel_size = 3, 3
@@ -299,6 +286,20 @@ class Config2D(BaseConfig):
             self.net_conv_after_unet = 128
             self.head_blocks = 2
         elif self.backbone == 'hrunet':
+            self.unet_n_depth = 4
+            self.unet_kernel_size = 3, 3
+            self.unet_n_filter_base = 32
+            self.unet_n_conv_per_depth = 2
+            self.unet_pool = 2, 2
+            self.unet_activation = 'relu'
+            self.unet_last_activation = 'relu'
+            # batchnorm is more importnant for resnet blocks
+            self.unet_batch_norm = True
+            self.unet_dropout = 0.0
+            self.unet_prefix = ''
+            self.net_conv_after_unet = 128
+            self.head_blocks = 2
+        elif self.backbone == 'transunet':
             self.unet_n_depth = 4
             self.unet_kernel_size = 3, 3
             self.unet_n_filter_base = 32
@@ -705,7 +706,7 @@ class nurisc2D(nuriscBase):
         return labels, res_dict
 
     def _axes_div_by(self, query_axes):
-        self.config.backbone in ('unet', 'unetplus', 'mrunet', 'fpn','ffnet','attentionmultiresunet','hrunet','transunet') or _raise(NotImplementedError())
+        self.config.backbone in ('unet', 'unetplus', 'mrunet', 'fpn','ffnet','attentionmultiresunet','hrunet') or _raise(NotImplementedError())
         query_axes = axes_check_and_normalize(query_axes)
         assert len(self.config.unet_pool) == len(self.config.grid)
 
