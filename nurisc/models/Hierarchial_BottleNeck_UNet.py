@@ -1,5 +1,5 @@
-from Import import *
-from Utility import *
+from .Import import *
+from .Utility import *
 
 
 class HBA(keras.layers.MultiHeadAttention):
