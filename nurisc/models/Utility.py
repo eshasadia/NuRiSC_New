@@ -1,4 +1,4 @@
-from Import import *
+from .Import import *
 
 class_names = ['AMD', 'NON-AMD']
 class_names_label = {class_name: i for i, class_name in enumerate(class_names)}
