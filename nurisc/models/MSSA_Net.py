@@ -17,7 +17,7 @@ import tensorflow as tf
 tf.config.experimental_run_functions_eagerly(True)
 
 image_size = 512  # We'll resize input images to this size
-patch_size = 16  # Size of the patches to be extract from the input images
+patch_size = 256  # Size of the patches to be extract from the input images
 num_patches = (image_size // patch_size) ** 2
 projection_dim = 64
 num_heads = 4
