@@ -166,7 +166,7 @@ def transformer(x):
 def encoder1(inputs):
     skip_connections = []
 
-    model = VGG16(include_top=False, weights='imagenet', input_tensor=inputs)
+    model = VGG19(include_top=False, weights='imagenet', input_tensor=inputs)
     names = ["block1_conv2", "block2_conv2", "block3_conv4", "block4_conv4"]
     for name in names:
         skip_connections.append(model.get_layer(name).output)
@@ -274,7 +274,7 @@ def Double_UNet(shape):
     # first encoding and decoding
     inputs = Input(shape)
     # print("input:",inputs.shape)
-    x, skip_1 = encoder2(inputs)
+    x, skip_1 = encoder1(inputs)
     # print(x.shape)
     # x = transformer(x)
     x = ASPP(x, 64)
@@ -304,7 +304,7 @@ def MSSA_Net():
     #
     # first encoding and decoding
     inputs = shape
-    x1, skip_1 = encoder2(inputs)
+    x1, skip_1 = encoder1(inputs)
     x1 = ASPP(x1, 64)
 
     x2, skip_2 = encoder2(inputs)
