@@ -274,7 +274,7 @@ def Double_UNet(shape):
     # first encoding and decoding
     inputs = Input(shape)
     # print("input:",inputs.shape)
-    x, skip_1 = encoder1(inputs)
+    x, skip_1 = encoder2(inputs)
     # print(x.shape)
     # x = transformer(x)
     x = ASPP(x, 64)
