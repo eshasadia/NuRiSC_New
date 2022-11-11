@@ -165,8 +165,11 @@ def transformer(x):
 # The first encoding uses the VGG network
 def encoder1(inputs):
     skip_connections = []
-
-    model = VGG19(include_top=False, weights='imagenet', input_tensor=inputs)
+    #  x_train = tf.random.normal((100, 128, 128, 3))
+    inputs = tf.keras.layers.Input(shape=inputs.shape)
+    
+    base_model = VGG19(include_top=False, weights='imagenet', input_tensor=inputs)
+    model = tf.keras.Model(inputs, base_model.output)
     names = ["block1_conv2", "block2_conv2", "block3_conv4", "block4_conv4"]
     for name in names:
         skip_connections.append(model.get_layer(name).output)
