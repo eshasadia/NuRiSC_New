@@ -166,7 +166,7 @@ def transformer(x):
 def encoder1(inputs):
     skip_connections = []
     #  x_train = tf.random.normal((100, 128, 128, 3))
-    inputs = tf.keras.layers.Input(shape=inputs.shape)
+    inputs = tf.keras.layers.Input(shape=inputs.shape[1:])
     
     base_model = VGG19(include_top=False, weights='imagenet', input_tensor=inputs)
     model = tf.keras.Model(inputs, base_model.output)
