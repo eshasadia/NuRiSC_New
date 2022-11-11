@@ -304,7 +304,7 @@ def MSSA_Net():
     #
     # first encoding and decoding
     inputs = shape
-    x1, skip_1 = encoder1(inputs)
+    x1, skip_1 = encoder2(inputs)
     x1 = ASPP(x1, 64)
 
     x2, skip_2 = encoder2(inputs)
