@@ -168,7 +168,7 @@ def encoder1(inputs):
     #  x_train = tf.random.normal((100, 128, 128, 3))
 #     inputs = tf.keras.layers.Input(shape=inputs.shape[1:])
     
-    base_model = VGG19(include_top=False, weights='imagenet', input_tensor=inputs[1:])
+    base_model = ResNet50(include_top=False, weights='imagenet', input_tensor=inputs[1:])
     model = tf.keras.Model(inputs, base_model.output)
     names = ["block1_conv2", "block2_conv2", "block3_conv4", "block4_conv4"]
     for name in names:
