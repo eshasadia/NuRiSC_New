@@ -164,17 +164,14 @@ def transformer(x):
 
 # The first encoding uses the VGG network
 def encoder1(inputs):
+    num_filters = [32, 64, 128, 256]
     skip_connections = []
-    #  x_train = tf.random.normal((100, 128, 128, 3))
-#     inputs = tf.keras.layers.Input(shape=inputs.shape[1:])
-    
-    base_model = ResNet50(include_top=False, weights='imagenet', input_tensor=inputs[1:])
-    model = tf.keras.Model(inputs, base_model.output)
-    names = ["block1_conv2", "block2_conv2", "block3_conv4", "block4_conv4"]
-    for name in names:
-        skip_connections.append(model.get_layer(name).output)
+    x = inputs
 
-    output = model.get_layer("block5_conv4").output
+    for i, f in enumerate(num_filters):
+        x = conv_block(x, f)
+        skip_connections.append(x)
+        x = MaxPool2D((2, 2))(x)
     return output, skip_connections
 # normal decoding
 def decoder1(inputs, skip_connections):
