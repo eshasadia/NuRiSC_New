@@ -172,7 +172,7 @@ def encoder1(inputs):
         x = conv_block(x, f)
         skip_connections.append(x)
         x = MaxPool2D((2, 2))(x)
-    return output, skip_connections
+    return x, skip_connections
 # normal decoding
 def decoder1(inputs, skip_connections):
     num_filters = [256, 128, 64, 32]
