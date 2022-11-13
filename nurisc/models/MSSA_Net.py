@@ -164,15 +164,15 @@ def transformer(x):
 
 # The first encoding uses the VGG network
 def encoder1(inputs):
-    num_filters = [32, 64, 128, 256]
     skip_connections = []
-    x = inputs
 
-    for i, f in enumerate(num_filters):
-        x = conv_block(x, f)
-        skip_connections.append(x)
-        x = MaxPool2D((2, 2))(x)
-    return x, skip_connections
+    model = VGG19(include_top=False, weights='imagenet', input_tensor=inputs)
+    names = ["block1_conv2", "block2_conv2", "block3_conv4", "block4_conv4","block5_conv5"]
+    for name in names:
+        skip_connections.append(model.get_layer(name).output)
+
+    output = model.get_layer("block5_conv4").output
+    return output, skip_connections
 # normal decoding
 def decoder1(inputs, skip_connections):
     num_filters = [256, 128, 64, 32]
