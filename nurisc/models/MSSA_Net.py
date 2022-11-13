@@ -163,10 +163,11 @@ def transformer(x):
 
 
 # The first encoding uses the VGG network
-def encoder1(inputs):
+def encoder1(input_shape):
     skip_connections = []
-
-    model = ResNet50(include_top=True, weights='imagenet', input_tensor=inputs)
+    inputs=Input(input_shape)
+    model = ResNet50(include_top=False, weights='imagenet', input_tensor=inputs)
+    model.summary()
     names = ["block1_conv2", "block2_conv2", "block3_conv4", "block4_conv4","block5_conv5"]
     for name in names:
         skip_connections.append(model.get_layer(name).output)
