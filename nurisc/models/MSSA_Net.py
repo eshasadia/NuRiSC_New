@@ -16,8 +16,8 @@ from keras.layers import Reshape
 import tensorflow as tf
 tf.config.experimental_run_functions_eagerly(True)
 
-image_size = 224  # We'll resize input images to this size
-patch_size = 224  # Size of the patches to be extract from the input images
+image_size = 512  # We'll resize input images to this size
+patch_size = 16  # Size of the patches to be extract from the input images
 num_patches = (image_size // patch_size) ** 2
 projection_dim = 64
 num_heads = 4
@@ -163,10 +163,10 @@ def transformer(x):
 
 
 # The first encoding uses the VGG network
-def encoder1(input_shape):
+def encoder1(inputs):
     skip_connections = []
-    inputs=Input(input_shape)
-    model = ResNet50(include_top=False, weights='imagenet', input_tensor=inputs)
+   
+    model = VGG19(include_top=False, weights='imagenet', input_tensor=inputs)
     model.summary()
     names = ["block1_conv2", "block2_conv2", "block3_conv4", "block4_conv4","block5_conv5"]
     for name in names:
@@ -301,10 +301,10 @@ def Double_UNet(shape):
 
 
 def MSSA_Net():
-  def f(shape):
+  def f(inputs):
     #
     # first encoding and decoding
-    inputs = Input(shape)
+    # inputs = Input(shape)
     x1, skip_1 = encoder1(inputs)
     x1 = ASPP(x1, 64)
 
