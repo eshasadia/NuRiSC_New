@@ -363,7 +363,7 @@ class Config2D(BaseConfig):
 
         # net_mask_shape not needed but kept for legacy reasons
         if backend_channels_last():
-            self.net_input_shape = 512, 512, self.n_channel_in
+            self.net_input_shape = 512, 512, 3
             self.net_mask_shape = None, None, 1
         else:
             self.net_input_shape = self.n_channel_in, 512, 512
@@ -501,7 +501,7 @@ class nurisc2D(nuriscBase):
         elif self.config.backbone == 'mssanet':
             width_shape = 512
             height_shape = 512
-            image_input = Input(shape=(net_input_shape[0],net_input_shape[1],net_input_shape[2])
+            image_input = Input(shape=(input_img[0],input_img[1],input_img[2])
             unet_base = MSSA_Net()(image_input)
 #             unet_base = MSSA_Net()(pooled_img)
             
