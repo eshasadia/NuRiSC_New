@@ -501,7 +501,7 @@ class nurisc2D(nuriscBase):
         elif self.config.backbone == 'mssanet':
             width_shape = 512
             height_shape = 512
-            image_input = Input(shape=(pooled_img[0], pooled_img[1], pooled_img[2]))
+            image_input = Input(shape=pooled_img)
             unet_base = MSSA_Net()(image_input)
 #             unet_base = MSSA_Net()(pooled_img)
             
