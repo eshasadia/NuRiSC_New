@@ -515,7 +515,7 @@ class nurisc2D(nuriscBase):
         elif self.config.backbone == 'transformerunet':
             unet_base = TransUNet()(pooled_img)
         elif self.config.backbone == 'sanet':
-            unet_base = TransUNet()(pooled_img)
+            unet_base = SA_UNet()(pooled_img)
         else:
             _raise(NotImplementedError(self.config.backbone))
 
