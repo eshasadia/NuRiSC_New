@@ -252,11 +252,11 @@ def denseUnet(blocks=(4, 8, 12, 16, 20), growth_rate=5, drop_rate=0.2,classes=2,
     tran_channels = [int(x * growth_rate * 0.50) for x in blocks]
 
     # --- Input
-    xi0 = layers.Input(shape=input_shape)
+#     xi0 = layers.Input(shape=input_shape)
 
     # ========================================================================
     # --- DOWNSAMPLING -----------------------------------------------------
-    x00 = dense_1st_block(xi0, blocks[0], growth_rate, name='conv00')
+    x00 = dense_1st_block(input_shape, blocks[0], growth_rate, name='conv00')
     x00D = downsampling_block(x00, tran_channels[0], name='down00')
 
     x10 = dense_block(x00D, blocks[1], growth_rate, name='conv10', drop_rate=drop_rate)
@@ -313,7 +313,7 @@ def denseUnet(blocks=(4, 8, 12, 16, 20), growth_rate=5, drop_rate=0.2,classes=2,
     x05 = layers.Reshape((int(input_shape[0] * input_shape[1]), classes))(x05)
     x05 = layers.Activation('softmax', name='conv05_softmax')(x05)
 
-    model = Model(inputs=xi0, outputs=x05, name='denseUnet_fNLA')
+    model = Model(inputs=input_shape, outputs=x05, name='denseUnet_fNLA')
     if weights is not None:
         model.load_weights(weights)
     nadam = Nadam(lr=lr, beta_1=0.9, beta_2=0.999, epsilon=1e-07)
