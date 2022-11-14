@@ -499,7 +499,12 @@ class nurisc2D(nuriscBase):
         elif self.config.backbone == 'mrunet':
             unet_base = mrunet_block(unet_kwargs['n_filter_base'])(pooled_img)
         elif self.config.backbone == 'mssanet':
-            unet_base = MSSA_Net()(pooled_img)
+            width_shape = 512
+            height_shape = 512
+            image_input = Input(shape=(width_shape, height_shape, 3))
+            unet_base = MSSA_Net()(image_input)
+#             unet_base = MSSA_Net()(pooled_img)
+            
         elif self.config.backbone == 'fpn':
             unet_base = fpn_block(head_filters=unet_kwargs['n_filter_base'],
                                   **unet_kwargs)(pooled_img)
