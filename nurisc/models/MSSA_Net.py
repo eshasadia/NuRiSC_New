@@ -238,7 +238,7 @@ def ASPP(x, filters):
     y1 = Conv2D(filters, 1, padding="same")(y1)
     y1 = BatchNormalization()(y1)
     y1 = Activation("relu")(y1)
-    y1 = UpSampling2D((shape[1], shape[2]), interpolation='bilinear')(y1)
+    y1 = UpSampling2D((2,2), interpolation='bilinear')(y1)
     print("y1:", y1.shape)
 
     y2 = Conv2D(filters, 1, dilation_rate=1, padding="same", use_bias=False)(x)
