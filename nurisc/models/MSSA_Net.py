@@ -234,6 +234,9 @@ def Upsample(tensor, size):
 def ASPP(x, filter):
     shape = x.shape
     print(shape)
+    if(shape[1]==None & shape[2]==None):
+      shape[1]=512
+      shape[2]=512
     y1 = AveragePooling2D(pool_size=(shape[1], shape[2]))(x)
     y1 = Conv2D(filter, 1, padding="same")(y1)
     y1 = BatchNormalization()(y1)
