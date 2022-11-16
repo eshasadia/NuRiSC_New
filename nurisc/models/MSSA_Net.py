@@ -316,11 +316,11 @@ def Upsample(tensor, size):
 def ASPP(x, filter):
     shape = x.shape
     print(shape)
-    y1 = AveragePooling2D(pool_size=(shape[1], shape[2]))(x)
+    y1 = AveragePooling2D()(x)
     y1 = Conv2D(filter, 1, padding="same")(y1)
     y1 = BatchNormalization()(y1)
     y1 = Activation("relu")(y1)
-    y1 = UpSampling2D((shape[1], shape[2]), interpolation='bilinear')(y1)
+    y1 = UpSampling2D()(y1)
     print("y1:", y1.shape)
 
     y2 = Conv2D(filter, 1, dilation_rate=1, padding="same", use_bias=False)(x)
