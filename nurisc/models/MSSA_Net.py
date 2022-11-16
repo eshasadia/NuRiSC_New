@@ -385,7 +385,7 @@ def Double_UNet(shape):
 def MSSA_Net():
     def f(shape):
         # 第一次编码和解码
-        inputs = Input(shape)
+        inputs =shape
         x1, skip_1 = encoder1(inputs)
         x1 = ASPP(x1, 64)
 
