@@ -507,7 +507,7 @@ class nurisc2D(nuriscBase):
             unet_base = fpn_block(head_filters=unet_kwargs['n_filter_base'],
                                   **unet_kwargs)(pooled_img)
         elif self.config.backbone == 'ffnet':
-            unet_base = FF_UNet(filter=unet_kwargs['n_filter_base'], **unet_kwargs)(pooled_img)
+            unet_base = FF_UNet(filter=unet_kwargs['n_filter_base'])(pooled_img)
         elif self.config.backbone == 'transunet':
             unet_base = transunet_block(filter_num=unet_kwargs['n_filter_base'],
                                   **unet_kwargs)(pooled_img)
