@@ -503,7 +503,7 @@ def convert(model, include_top=True, classes=1000, num_layers=3, strides=2, acti
     return keras.models.Model(inputs, nn)
 
 
-def Encoder(include_top=True, input_tensor=None, input_shape=None, classes=1000, num_layers=3, strides=2,
+def Encoder(include_top=True, input_tensor, classes=1000, num_layers=3, strides=2,
             activation="relu", **kwargs):
     mm = keras.applications.ResNet50(include_top=False, weights='imagenet', input_tensor=input_tensor,
                                      input_shape=input_shape, **kwargs)
@@ -533,7 +533,7 @@ def HBA_U_Net( dropout_rate=0.4, use_attnDecoder=False, skip=False, num_layers=3
     resnet_base = Encoder(
         include_top=True,
         classes=2,
-        input_shape=input_shape,
+        input_tensor=input_shape,
         # input_shape=(512, 512, 3),
         num_layers=num_layers
     )
