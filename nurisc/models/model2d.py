@@ -500,7 +500,7 @@ class nurisc2D(nuriscBase):
                 enumerate(unet_base))
             unet_base = Concatenate()(unet_base)
         elif self.config.backbone == 'tsfd':
-            unet_base =efficent_pet_203_clf(Input(pooled_img), bifpn_ch = 224, dropout_rate=0.3, use_dropout=False)
+            unet_base =efficent_pet_203_clf(pooled_img, bifpn_ch = 224, dropout_rate=0.3, use_dropout=False)
 #             unet_base = mrunet_block(unet_kwargs['n_filter_base'])(pooled_img)
         elif self.config.backbone == 'mssanet':
             unet_base = MSSA_Net()(pooled_img)
