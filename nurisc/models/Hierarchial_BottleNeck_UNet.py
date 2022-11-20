@@ -503,7 +503,7 @@ def convert(model, include_top=True, classes=1000, num_layers=3, strides=2, acti
     return keras.models.Model(inputs, nn)
 
 
-def Encoder(include_top=True, input_tensor, classes=1000, num_layers=3, strides=2,
+def Encoder(input_tensor,include_top=True, classes=1000, num_layers=3, strides=2,
             activation="relu", **kwargs):
     mm = keras.applications.ResNet50(include_top=False, weights='imagenet', input_tensor=input_tensor,
                                      input_shape=input_shape, **kwargs)
