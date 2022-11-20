@@ -36,7 +36,7 @@ from .Hierarchial_BottleNeck_UNet import HBA_U_Net
 from .TransformerUnet import TransUNet
 from .MSSA_Net import MSSA_Net
 from .denseunet_feedbacknla import  denseUnet
-
+from .tsfd import efficent_pet_203_clf
 class nuriscData2D(nuriscDataBase):
 
     def __init__(self, X, Y, batch_size, n_rays, length,
@@ -232,7 +232,7 @@ class Config2D(BaseConfig):
             self.unet_batch_norm = True
             self.net_conv_after_unet = 128
             self.head_blocks = 2
-        elif self.backbone == 'mrunet':
+        elif self.backbone == 'tsfd':
             self.unet_n_depth = 3
             self.unet_kernel_size = 3, 3
             self.unet_n_filter_base = 32
@@ -499,8 +499,9 @@ class nurisc2D(nuriscBase):
                 UpSampling2D(tuple(p ** i for p in unet_kwargs['pool']), interpolation='bilinear')(x) for i, x in
                 enumerate(unet_base))
             unet_base = Concatenate()(unet_base)
-        elif self.config.backbone == 'mrunet':
-            unet_base = mrunet_block(unet_kwargs['n_filter_base'])(pooled_img)
+        elif self.config.backbone == 'tsfd':
+            unet_base =efficent_pet_203_clf(Input(pooled_img), bifpn_ch = 224, dropout_rate=0.3, use_dropout=False)
+#             unet_base = mrunet_block(unet_kwargs['n_filter_base'])(pooled_img)
         elif self.config.backbone == 'mssanet':
             unet_base = MSSA_Net()(pooled_img)
         elif self.config.backbone == 'fpn':
@@ -757,7 +758,7 @@ class nurisc2D(nuriscBase):
         return labels, res_dict
 
     def _axes_div_by(self, query_axes):
-        self.config.backbone in ('unet', 'unetplus', 'mrunet', 'fpn','ffnet','attentionmultiresunet','denseunet','hrunet','transformerunet','mssanet') or _raise(NotImplementedError())
+        self.config.backbone in ('unet', 'unetplus', 'tsfd', 'fpn','ffnet','attentionmultiresunet','denseunet','hrunet','transformerunet','mssanet') or _raise(NotImplementedError())
         query_axes = axes_check_and_normalize(query_axes)
         assert len(self.config.unet_pool) == len(self.config.grid)
 
