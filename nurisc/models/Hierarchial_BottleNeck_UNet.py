@@ -193,7 +193,7 @@ def convert(model, include_top=True, classes=1000, num_layers=3, strides=2, acti
 
 def Encoder(include_top=True, input_tensor=None, input_shape=None, classes=1000, num_layers=3, strides=2,
             activation="relu", **kwargs):
-    mm = keras.applications.ResNet50(include_top=False, weights=None, input_tensor=input_tensor,
+    mm = keras.applications.ResNet50(include_top=False, weights='imagenet', input_tensor=input_tensor,
                                      input_shape=input_shape, **kwargs)
     return convert(mm, include_top=include_top, classes=classes, strides=strides, activation=activation,
                    num_layers=num_layers)
@@ -505,7 +505,7 @@ def convert(model, include_top=True, classes=1000, num_layers=3, strides=2, acti
 
 def Encoder(include_top=True, input_tensor=None, input_shape=None, classes=1000, num_layers=3, strides=2,
             activation="relu", **kwargs):
-    mm = keras.applications.ResNet50(include_top=False, weights=None, input_tensor=input_tensor,
+    mm = keras.applications.ResNet50(include_top=False, weights='imagenet', input_tensor=input_tensor,
                                      input_shape=input_shape, **kwargs)
     return convert(mm, include_top=include_top, classes=classes, strides=strides, activation=activation,
                    num_layers=num_layers)
