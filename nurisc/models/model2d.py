@@ -260,7 +260,7 @@ class Config2D(BaseConfig):
             self.unet_prefix = ''
             self.net_conv_after_unet = 128
             self.head_blocks = 2
-          elif self.backbone == 'fanet':
+        elif self.backbone == 'fanet':
             self.unet_n_depth = 4
             self.unet_kernel_size = 3, 3
             self.unet_n_filter_base = 32
