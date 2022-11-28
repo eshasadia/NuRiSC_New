@@ -37,6 +37,7 @@ from .TransformerUnet import TransUNet
 from .MSSA_Net import MSSA_Net
 from .denseunet_feedbacknla import  denseUnet
 from .tsfd import efficent_pet_203_clf
+from .FANet import model
 class nuriscData2D(nuriscDataBase):
 
     def __init__(self, X, Y, batch_size, n_rays, length,
@@ -246,6 +247,20 @@ class Config2D(BaseConfig):
             self.net_conv_after_unet = 128
             self.head_blocks = 2
         elif self.backbone == 'fpn':
+            self.unet_n_depth = 4
+            self.unet_kernel_size = 3, 3
+            self.unet_n_filter_base = 32
+            self.unet_n_conv_per_depth = 2
+            self.unet_pool = 2, 2
+            self.unet_activation = 'elu'
+            self.unet_last_activation = 'elu'
+            # batchnorm is more importnant for resnet blocks
+            self.unet_batch_norm = True
+            self.unet_dropout = 0.0
+            self.unet_prefix = ''
+            self.net_conv_after_unet = 128
+            self.head_blocks = 2
+          elif self.backbone == 'fanet':
             self.unet_n_depth = 4
             self.unet_kernel_size = 3, 3
             self.unet_n_filter_base = 32
@@ -518,6 +533,8 @@ class nurisc2D(nuriscBase):
             unet_base = HBA_U_Net()(pooled_img)
         elif self.config.backbone == 'transformerunet':
             unet_base = TransUNet()(pooled_img)
+        elif self.config.backbone == 'fanet':
+            unet_base = model(input_size=pooled_img)
         else:
             _raise(NotImplementedError(self.config.backbone))
 
@@ -758,7 +775,7 @@ class nurisc2D(nuriscBase):
         return labels, res_dict
 
     def _axes_div_by(self, query_axes):
-        self.config.backbone in ('unet', 'unetplus', 'tsfd', 'fpn','ffnet','attentionmultiresunet','denseunet','hrunet','transformerunet','mssanet') or _raise(NotImplementedError())
+        self.config.backbone in ('unet', 'unetplus', 'tsfd', 'fpn','ffnet','attentionmultiresunet','denseunet','hrunet','transformerunet','mssanet', 'fanet') or _raise(NotImplementedError())
         query_axes = axes_check_and_normalize(query_axes)
         assert len(self.config.unet_pool) == len(self.config.grid)
 
