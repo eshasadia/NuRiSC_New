@@ -3,7 +3,7 @@ import numpy as np
 import keras
 import tensorflow as tf
 from keras import backend as K
-from keras.engine import Input, Model
+from keras import Model
 from keras.layers import Conv3D, MaxPooling3D, UpSampling3D, Activation,Reshape, \
                         BatchNormalization, PReLU, Deconvolution3D,Add,SpatialDropout3D,\
                             add,GlobalAveragePooling3D,AveragePooling3D,multiply,Lambda,Dense
