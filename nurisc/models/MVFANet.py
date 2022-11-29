@@ -174,7 +174,7 @@ def unet_model_3d(input_shape, pool_size=(2, 2, 1), n_labels=1, initial_learning
     ############################
     #resUnet + dropout
     ###############################
-    inputs = Input(input_shape)
+    inputs = input_shape
     # current_layer = inputs    
     inputs_1 = Conv3D(n_base_filters,kernel_size=(3,3,3),strides=(1,1,1),padding="same")(inputs)
     inputs_1 = BatchNormalization(axis=1)(inputs_1)
