@@ -188,6 +188,6 @@ def model(input_size ,num_classes=19):
   classifier = tf.dtypes.cast(classifier, tf.float32)
   classifier = tf.keras.activations.softmax(classifier)
 
-  FANet = tf.keras.Model(inputs = input_layer , outputs = classifier, name = 'FANet')
+  FANet = tf.keras.Model(inputs = input_size , outputs = classifier, name = 'FANet')
 
   return FANet
