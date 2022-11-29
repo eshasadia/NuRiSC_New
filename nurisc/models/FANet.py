@@ -76,7 +76,7 @@ def SeparableConvBlock(num_channels, kernel_size, strides, freeze_bn=False):
     return reduce(lambda f, g: lambda *args, **kwargs: g(f(*args, **kwargs)), (f1, f2))
 
 
-def model(num_classes=19, input_size):
+def model(input_size ,num_classes=19):
 
   # Input Layer
   #input_layer = tf.keras.layers.Input(shape=input_size, name = 'input_layer')
