@@ -76,10 +76,11 @@ def SeparableConvBlock(num_channels, kernel_size, strides, freeze_bn=False):
     return reduce(lambda f, g: lambda *args, **kwargs: g(f(*args, **kwargs)), (f1, f2))
 
 
-def model(num_classes=19, input_size=(1024, 2048, 3)):
+def model(num_classes=19, input_size):
 
   # Input Layer
-  input_layer = tf.keras.layers.Input(shape=input_size, name = 'input_layer')
+  #input_layer = tf.keras.layers.Input(shape=input_size, name = 'input_layer')
+  input_layer=input_size
 
   ## Step 1: Learning to DownSample
   lds_layer = conv_block(input_layer, 'conv', 32, (3, 3), strides = (2, 2))
